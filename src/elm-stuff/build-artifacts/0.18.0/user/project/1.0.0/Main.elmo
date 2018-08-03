@@ -1,0 +1,1012 @@
+var _user$project$Main$userW = 45;
+var _user$project$Main$userH = 45;
+var _user$project$Main$userColor = _elm_lang$core$Color$darkPurple;
+var _user$project$Main$blockW = 50;
+var _user$project$Main$blockH = 50;
+var _user$project$Main$blockColor = _elm_lang$core$Color$darkRed;
+var _user$project$Main$renderBoks = function (b) {
+	return A2(
+		_evancz$elm_graphics$Collage$moveX,
+		b.x,
+		A2(
+			_evancz$elm_graphics$Collage$moveY,
+			b.y,
+			A2(
+				_evancz$elm_graphics$Collage$filled,
+				_user$project$Main$blockColor,
+				A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$blockW, _user$project$Main$blockH))));
+};
+var _user$project$Main$deadMelding = 'You died \n\n to try again hit \"Enter\" \n\n Score: ';
+var _user$project$Main$startGame = 'Welcome, to start the game hit \"Enter\" \n\n Use \"A\" and \"D\" to controll the block \n\n and use \"Space\" so pause the game';
+var _user$project$Main$gameName = 'Avoid the blocks';
+var _user$project$Main$pauseMelding = 'Game Paused \n\n Unpause by hitting \"Enter\" \n\n Current score is: ';
+var _user$project$Main$backgroundColor = _elm_lang$core$Color$darkCharcoal;
+var _user$project$Main$h = 700;
+var _user$project$Main$w = 500;
+var _user$project$Main$moving = function (game) {
+	var p = game.player;
+	return _elm_lang$core$Native_Utils.update(
+		game,
+		{
+			player: _elm_lang$core$Native_Utils.update(
+				p,
+				{x: game.player.x + game.player.playerAcc})
+		});
+};
+var _user$project$Main$testHit = F2(
+	function (game, b) {
+		return ((_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Basics$abs(b.y - game.player.y),
+			47.5) < 1) && (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Basics$abs(b.x - game.player.x),
+			47.5) < 1)) ? true : false;
+	});
+var _user$project$Main$checkY = function (bl) {
+	return (_elm_lang$core$Native_Utils.cmp(bl.y, -400) < 0) ? false : true;
+};
+var _user$project$Main$removeStruc = function (game) {
+	var b = game.boks;
+	return _elm_lang$core$Native_Utils.update(
+		game,
+		{
+			boks: A2(_elm_lang$core$List$filter, _user$project$Main$checkY, b)
+		});
+};
+var _user$project$Main$stop = F2(
+	function (condition, game) {
+		if (A2(condition, game.player.playerAcc, 0)) {
+			var p = game.player;
+			return _elm_lang$core$Native_Utils.update(
+				game,
+				{
+					player: _elm_lang$core$Native_Utils.update(
+						p,
+						{playerAcc: 0})
+				});
+		} else {
+			return game;
+		}
+	});
+var _user$project$Main$run = F2(
+	function (speed, game) {
+		var p = game.player;
+		return _elm_lang$core$Native_Utils.update(
+			game,
+			{
+				player: _elm_lang$core$Native_Utils.update(
+					p,
+					{playerAcc: speed})
+			});
+	});
+var _user$project$Main$runSpeed = 9;
+var _user$project$Main$blockFall = -8.0;
+var _user$project$Main$applySpeed = function (s) {
+	return _elm_lang$core$Native_Utils.update(
+		s,
+		{y: s.y + _user$project$Main$blockFall});
+};
+var _user$project$Main$blockMake = F2(
+	function (x, y) {
+		return {x: x, y: y};
+	});
+var _user$project$Main$multiplBlock = function (g) {
+	return A2(
+		_user$project$Main$blockMake,
+		_elm_lang$core$Basics$toFloat(g.x * 25),
+		_elm_lang$core$Basics$toFloat((g.y * 25) + 550));
+};
+var _user$project$Main$accesBlockinList = function (l) {
+	return A2(_elm_lang$core$List$map, _user$project$Main$multiplBlock, l);
+};
+var _user$project$Main$gridBlock = F2(
+	function (x, y) {
+		return {x: x, y: y};
+	});
+var _user$project$Main$structure = _elm_lang$core$Array$fromList(
+	{
+		ctor: '::',
+		_0: {
+			ctor: '::',
+			_0: A2(_user$project$Main$gridBlock, -9, 13),
+			_1: {
+				ctor: '::',
+				_0: A2(_user$project$Main$gridBlock, -7, 11),
+				_1: {
+					ctor: '::',
+					_0: A2(_user$project$Main$gridBlock, -5, 9),
+					_1: {
+						ctor: '::',
+						_0: A2(_user$project$Main$gridBlock, -3, 7),
+						_1: {
+							ctor: '::',
+							_0: A2(_user$project$Main$gridBlock, -1, 5),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$Main$gridBlock, 1, 3),
+								_1: {
+									ctor: '::',
+									_0: A2(_user$project$Main$gridBlock, -1, 1),
+									_1: {
+										ctor: '::',
+										_0: A2(_user$project$Main$gridBlock, -3, -1),
+										_1: {
+											ctor: '::',
+											_0: A2(_user$project$Main$gridBlock, -5, -3),
+											_1: {
+												ctor: '::',
+												_0: A2(_user$project$Main$gridBlock, -7, -5),
+												_1: {
+													ctor: '::',
+													_0: A2(_user$project$Main$gridBlock, -9, -7),
+													_1: {
+														ctor: '::',
+														_0: A2(_user$project$Main$gridBlock, 3, 13),
+														_1: {
+															ctor: '::',
+															_0: A2(_user$project$Main$gridBlock, 5, 11),
+															_1: {
+																ctor: '::',
+																_0: A2(_user$project$Main$gridBlock, 7, 9),
+																_1: {
+																	ctor: '::',
+																	_0: A2(_user$project$Main$gridBlock, 9, 7),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(_user$project$Main$gridBlock, 9, -1),
+																		_1: {
+																			ctor: '::',
+																			_0: A2(_user$project$Main$gridBlock, 7, -3),
+																			_1: {
+																				ctor: '::',
+																				_0: A2(_user$project$Main$gridBlock, 5, -5),
+																				_1: {
+																					ctor: '::',
+																					_0: A2(_user$project$Main$gridBlock, 3, -7),
+																					_1: {ctor: '[]'}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		_1: {
+			ctor: '::',
+			_0: {
+				ctor: '::',
+				_0: A2(_user$project$Main$gridBlock, -1, 13),
+				_1: {
+					ctor: '::',
+					_0: A2(_user$project$Main$gridBlock, 1, 13),
+					_1: {
+						ctor: '::',
+						_0: A2(_user$project$Main$gridBlock, -1, 11),
+						_1: {
+							ctor: '::',
+							_0: A2(_user$project$Main$gridBlock, 1, 11),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$Main$gridBlock, -5, 9),
+								_1: {
+									ctor: '::',
+									_0: A2(_user$project$Main$gridBlock, -3, 9),
+									_1: {
+										ctor: '::',
+										_0: A2(_user$project$Main$gridBlock, -1, 9),
+										_1: {
+											ctor: '::',
+											_0: A2(_user$project$Main$gridBlock, 1, 9),
+											_1: {
+												ctor: '::',
+												_0: A2(_user$project$Main$gridBlock, 3, 9),
+												_1: {
+													ctor: '::',
+													_0: A2(_user$project$Main$gridBlock, 5, 9),
+													_1: {
+														ctor: '::',
+														_0: A2(_user$project$Main$gridBlock, -5, 7),
+														_1: {
+															ctor: '::',
+															_0: A2(_user$project$Main$gridBlock, -3, 7),
+															_1: {
+																ctor: '::',
+																_0: A2(_user$project$Main$gridBlock, -1, 7),
+																_1: {
+																	ctor: '::',
+																	_0: A2(_user$project$Main$gridBlock, 1, 7),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(_user$project$Main$gridBlock, 3, 7),
+																		_1: {
+																			ctor: '::',
+																			_0: A2(_user$project$Main$gridBlock, 5, 7),
+																			_1: {
+																				ctor: '::',
+																				_0: A2(_user$project$Main$gridBlock, -1, 5),
+																				_1: {
+																					ctor: '::',
+																					_0: A2(_user$project$Main$gridBlock, 1, 5),
+																					_1: {
+																						ctor: '::',
+																						_0: A2(_user$project$Main$gridBlock, -1, 3),
+																						_1: {
+																							ctor: '::',
+																							_0: A2(_user$project$Main$gridBlock, 1, 3),
+																							_1: {ctor: '[]'}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '::',
+					_0: A2(_user$project$Main$gridBlock, -9, -1),
+					_1: {
+						ctor: '::',
+						_0: A2(_user$project$Main$gridBlock, -7, -1),
+						_1: {
+							ctor: '::',
+							_0: A2(_user$project$Main$gridBlock, -5, -1),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$Main$gridBlock, -3, -1),
+								_1: {
+									ctor: '::',
+									_0: A2(_user$project$Main$gridBlock, -1, -1),
+									_1: {
+										ctor: '::',
+										_0: A2(_user$project$Main$gridBlock, 1, -1),
+										_1: {
+											ctor: '::',
+											_0: A2(_user$project$Main$gridBlock, -3, 13),
+											_1: {
+												ctor: '::',
+												_0: A2(_user$project$Main$gridBlock, -1, 11),
+												_1: {
+													ctor: '::',
+													_0: A2(_user$project$Main$gridBlock, 1, 9),
+													_1: {
+														ctor: '::',
+														_0: A2(_user$project$Main$gridBlock, 3, 7),
+														_1: {
+															ctor: '::',
+															_0: A2(_user$project$Main$gridBlock, 5, 9),
+															_1: {
+																ctor: '::',
+																_0: A2(_user$project$Main$gridBlock, 7, 11),
+																_1: {
+																	ctor: '::',
+																	_0: A2(_user$project$Main$gridBlock, 9, 13),
+																	_1: {ctor: '[]'}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '::',
+						_0: A2(_user$project$Main$gridBlock, 0, 3),
+						_1: {
+							ctor: '::',
+							_0: A2(_user$project$Main$gridBlock, 0, 5),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$Main$gridBlock, -9, 5),
+								_1: {
+									ctor: '::',
+									_0: A2(_user$project$Main$gridBlock, 9, 5),
+									_1: {
+										ctor: '::',
+										_0: A2(_user$project$Main$gridBlock, -2, 7),
+										_1: {
+											ctor: '::',
+											_0: A2(_user$project$Main$gridBlock, 2, 7),
+											_1: {
+												ctor: '::',
+												_0: A2(_user$project$Main$gridBlock, 4, 9),
+												_1: {
+													ctor: '::',
+													_0: A2(_user$project$Main$gridBlock, -4, 9),
+													_1: {
+														ctor: '::',
+														_0: A2(_user$project$Main$gridBlock, -5, 11),
+														_1: {
+															ctor: '::',
+															_0: A2(_user$project$Main$gridBlock, 5, 11),
+															_1: {
+																ctor: '::',
+																_0: A2(_user$project$Main$gridBlock, -5, 13),
+																_1: {
+																	ctor: '::',
+																	_0: A2(_user$project$Main$gridBlock, 5, 13),
+																	_1: {ctor: '[]'}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	});
+var _user$project$Main$getChoice = function (i) {
+	return _user$project$Main$accesBlockinList(
+		A2(
+			_elm_lang$core$Maybe$withDefault,
+			{ctor: '[]'},
+			A2(_elm_lang$core$Array$get, i, _user$project$Main$structure)));
+};
+var _user$project$Main$addNewItem = function (game) {
+	var _p0 = A2(
+		_elm_lang$core$Random$step,
+		A2(
+			_elm_lang$core$Random$int,
+			0,
+			_elm_lang$core$Array$length(_user$project$Main$structure)),
+		game.seed);
+	var randomVal = _p0._0;
+	var newSeed = _p0._1;
+	return _elm_lang$core$Native_Utils.update(
+		game,
+		{
+			seed: newSeed,
+			boks: A2(
+				_elm_lang$core$List$append,
+				_user$project$Main$getChoice(randomVal),
+				game.boks)
+		});
+};
+var _user$project$Main$initialUser = {x: 0, vx: 0, y: -270, playerAcc: 0};
+var _user$project$Main$Game = F7(
+	function (a, b, c, d, e, f, g) {
+		return {player: a, score: b, state: c, seed: d, boks: e, tickTime: f, collision: g};
+	});
+var _user$project$Main$User = F4(
+	function (a, b, c, d) {
+		return {x: a, vx: b, y: c, playerAcc: d};
+	});
+var _user$project$Main$Block = F2(
+	function (a, b) {
+		return {x: a, y: b};
+	});
+var _user$project$Main$GridBlock = F2(
+	function (a, b) {
+		return {x: a, y: b};
+	});
+var _user$project$Main$Wall = F4(
+	function (a, b, c, d) {
+		return {h: a, w: b, x: c, y: d};
+	});
+var _user$project$Main$leftWall = A4(_user$project$Main$Wall, 1300, 10, -250, 0);
+var _user$project$Main$rightWall = A4(_user$project$Main$Wall, 1300, 10, 250, 0);
+var _user$project$Main$walls = function (game) {
+	if (_elm_lang$core$Native_Utils.cmp(game.player.x + 17, _user$project$Main$rightWall.x - 10) > -1) {
+		var p = game.player;
+		return _elm_lang$core$Native_Utils.update(
+			game,
+			{
+				player: _elm_lang$core$Native_Utils.update(
+					p,
+					{x: _user$project$Main$rightWall.x - 23})
+			});
+	} else {
+		if (_elm_lang$core$Native_Utils.cmp(game.player.x - 17, _user$project$Main$leftWall.x + 10) < 1) {
+			var p = game.player;
+			return _elm_lang$core$Native_Utils.update(
+				game,
+				{
+					player: _elm_lang$core$Native_Utils.update(
+						p,
+						{x: _user$project$Main$leftWall.x + 23})
+				});
+		} else {
+			return game;
+		}
+	}
+};
+var _user$project$Main$bottwall = A4(_user$project$Main$Wall, 10, 500, 0, -350);
+var _user$project$Main$Pause = {ctor: 'Pause'};
+var _user$project$Main$fucPause = function (game) {
+	return _elm_lang$core$Native_Utils.update(
+		game,
+		{state: _user$project$Main$Pause});
+};
+var _user$project$Main$Over = {ctor: 'Over'};
+var _user$project$Main$kill = function (game) {
+	return _elm_lang$core$Native_Utils.eq(
+		A2(
+			_elm_lang$core$List$any,
+			_user$project$Main$testHit(game),
+			game.boks),
+		true) ? _elm_lang$core$Native_Utils.update(
+		game,
+		{
+			state: _user$project$Main$Over,
+			collision: A2(
+				_elm_lang$core$List$filter,
+				_user$project$Main$testHit(game),
+				game.boks)
+		}) : game;
+};
+var _user$project$Main$Playing = {ctor: 'Playing'};
+var _user$project$Main$unfucPause = function (game) {
+	return _elm_lang$core$Native_Utils.update(
+		game,
+		{state: _user$project$Main$Playing});
+};
+var _user$project$Main$tickTack = function (game) {
+	if (_elm_lang$core$Native_Utils.eq(game.state, _user$project$Main$Playing)) {
+		var t = game.tickTime;
+		return _elm_lang$core$Native_Utils.update(
+			game,
+			{tickTime: t + 1});
+	} else {
+		return game;
+	}
+};
+var _user$project$Main$addnewBlock = function (game) {
+	return ((_elm_lang$core$Native_Utils.cmp(game.tickTime, 100) > -1) && _elm_lang$core$Native_Utils.eq(game.state, _user$project$Main$Playing)) ? _user$project$Main$addNewItem(
+		_elm_lang$core$Native_Utils.update(
+			game,
+			{tickTime: 0})) : game;
+};
+var _user$project$Main$fallingBloks = function (game) {
+	if (_elm_lang$core$Native_Utils.eq(game.state, _user$project$Main$Playing)) {
+		var b = game.boks;
+		return _elm_lang$core$Native_Utils.update(
+			game,
+			{
+				boks: A2(_elm_lang$core$List$map, _user$project$Main$applySpeed, b)
+			});
+	} else {
+		return game;
+	}
+};
+var _user$project$Main$stateCheck = function (game) {
+	if (_elm_lang$core$Native_Utils.eq(game.state, _user$project$Main$Pause)) {
+		var p = game.player;
+		return _elm_lang$core$Native_Utils.update(
+			game,
+			{
+				player: _elm_lang$core$Native_Utils.update(
+					p,
+					{playerAcc: 0})
+			});
+	} else {
+		if (_elm_lang$core$Native_Utils.eq(game.state, _user$project$Main$Playing)) {
+			var s = game.score;
+			return _elm_lang$core$Native_Utils.update(
+				game,
+				{score: game.score + 5.0e-2});
+		} else {
+			if (_elm_lang$core$Native_Utils.eq(game.state, _user$project$Main$Over)) {
+				var b = game.boks;
+				return _elm_lang$core$Native_Utils.update(
+					game,
+					{
+						boks: {ctor: '[]'}
+					});
+			} else {
+				return game;
+			}
+		}
+	}
+};
+var _user$project$Main$tick = function (game) {
+	return _user$project$Main$addnewBlock(
+		_user$project$Main$tickTack(
+			_user$project$Main$removeStruc(
+				_user$project$Main$moving(
+					_user$project$Main$walls(
+						_user$project$Main$fallingBloks(
+							_user$project$Main$stateCheck(
+								_user$project$Main$kill(game))))))));
+};
+var _user$project$Main$Starting = {ctor: 'Starting'};
+var _user$project$Main$defaultGame = {
+	player: _user$project$Main$initialUser,
+	score: 0.0,
+	state: _user$project$Main$Starting,
+	seed: _elm_lang$core$Random$initialSeed(0),
+	boks: {ctor: '[]'},
+	tickTime: 0,
+	collision: {ctor: '[]'}
+};
+var _user$project$Main$startOver = function (game) {
+	return _user$project$Main$defaultGame;
+};
+var _user$project$Main$key = F2(
+	function (msg, game) {
+		var _p1 = game.state;
+		switch (_p1.ctor) {
+			case 'Playing':
+				return function () {
+					var _p2 = msg;
+					_v1_5:
+					do {
+						if (_p2.ctor === 'KeyUps') {
+							switch (_p2._0) {
+								case 65:
+									return _user$project$Main$stop(
+										F2(
+											function (x, y) {
+												return _elm_lang$core$Native_Utils.cmp(x, y) < 0;
+											}));
+								case 68:
+									return _user$project$Main$stop(
+										F2(
+											function (x, y) {
+												return _elm_lang$core$Native_Utils.cmp(x, y) > 0;
+											}));
+								default:
+									break _v1_5;
+							}
+						} else {
+							switch (_p2._0) {
+								case 65:
+									return _user$project$Main$run(0 - _user$project$Main$runSpeed);
+								case 68:
+									return _user$project$Main$run(_user$project$Main$runSpeed);
+								case 32:
+									return _user$project$Main$fucPause;
+								default:
+									break _v1_5;
+							}
+						}
+					} while(false);
+					return _elm_lang$core$Basics$identity;
+				}()(game);
+			case 'Starting':
+				return function () {
+					var _p3 = msg;
+					if ((_p3.ctor === 'KeyDowns') && (_p3._0 === 13)) {
+						return _user$project$Main$unfucPause;
+					} else {
+						return _elm_lang$core$Basics$identity;
+					}
+				}()(game);
+			case 'Over':
+				return function () {
+					var _p4 = msg;
+					if ((_p4.ctor === 'KeyDowns') && (_p4._0 === 13)) {
+						return _user$project$Main$startOver;
+					} else {
+						return _elm_lang$core$Basics$identity;
+					}
+				}()(game);
+			default:
+				return function () {
+					var _p5 = msg;
+					if ((_p5.ctor === 'KeyDowns') && (_p5._0 === 13)) {
+						return _user$project$Main$unfucPause;
+					} else {
+						return _elm_lang$core$Basics$identity;
+					}
+				}()(game);
+		}
+	});
+var _user$project$Main$update = F2(
+	function (msg, game) {
+		var _p6 = msg;
+		switch (_p6.ctor) {
+			case 'InitialSeed':
+				return _user$project$Main$addNewItem(
+					_elm_lang$core$Native_Utils.update(
+						game,
+						{
+							seed: _elm_lang$core$Random$initialSeed(_p6._0)
+						}));
+			case 'Tick':
+				return _user$project$Main$tick(game);
+			default:
+				return A2(_user$project$Main$key, _p6._0, game);
+		}
+	});
+var _user$project$Main$updateWithCommand = F2(
+	function (msg, game) {
+		return {
+			ctor: '_Tuple2',
+			_0: A2(_user$project$Main$update, msg, game),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _user$project$Main$view = function (game) {
+	return _elm_lang$core$Native_Utils.eq(game.state, _user$project$Main$Pause) ? _evancz$elm_graphics$Element$toHtml(
+		A3(
+			_evancz$elm_graphics$Collage$collage,
+			_user$project$Main$w,
+			_user$project$Main$h,
+			{
+				ctor: '::',
+				_0: A2(
+					_evancz$elm_graphics$Collage$filled,
+					_user$project$Main$backgroundColor,
+					A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$w, _user$project$Main$h)),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_evancz$elm_graphics$Collage$move,
+						{ctor: '_Tuple2', _0: 0, _1: 200},
+						_evancz$elm_graphics$Collage$toForm(
+							_evancz$elm_graphics$Element$centered(
+								_evancz$elm_graphics$Text$fromString(_user$project$Main$gameName)))),
+					_1: {
+						ctor: '::',
+						_0: _evancz$elm_graphics$Collage$toForm(
+							_evancz$elm_graphics$Element$centered(
+								_evancz$elm_graphics$Text$fromString(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_user$project$Main$pauseMelding,
+										_elm_lang$core$Basics$toString(
+											_elm_lang$core$Basics$truncate(game.score)))))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$elm_graphics$Collage$moveY,
+								game.player.y,
+								A2(
+									_evancz$elm_graphics$Collage$moveX,
+									game.player.x,
+									A2(
+										_evancz$elm_graphics$Collage$filled,
+										_user$project$Main$userColor,
+										A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$userW, _user$project$Main$userH)))),
+							_1: {
+								ctor: '::',
+								_0: _evancz$elm_graphics$Collage$group(
+									A2(_elm_lang$core$List$map, _user$project$Main$renderBoks, game.boks)),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$moveX,
+										_user$project$Main$leftWall.x,
+										A2(
+											_evancz$elm_graphics$Collage$filled,
+											_elm_lang$core$Color$darkRed,
+											A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$leftWall.w, _user$project$Main$leftWall.h))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$moveX,
+											_user$project$Main$rightWall.x,
+											A2(
+												_evancz$elm_graphics$Collage$filled,
+												_elm_lang$core$Color$darkRed,
+												A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$rightWall.w, _user$project$Main$rightWall.h))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$moveY,
+												_user$project$Main$bottwall.y,
+												A2(
+													_evancz$elm_graphics$Collage$filled,
+													_elm_lang$core$Color$darkRed,
+													A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$bottwall.w, _user$project$Main$bottwall.h))),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			})) : (_elm_lang$core$Native_Utils.eq(game.state, _user$project$Main$Starting) ? _evancz$elm_graphics$Element$toHtml(
+		A3(
+			_evancz$elm_graphics$Collage$collage,
+			_user$project$Main$w,
+			_user$project$Main$h,
+			{
+				ctor: '::',
+				_0: A2(
+					_evancz$elm_graphics$Collage$filled,
+					_user$project$Main$backgroundColor,
+					A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$w, _user$project$Main$h)),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_evancz$elm_graphics$Collage$move,
+						{ctor: '_Tuple2', _0: 0, _1: 200},
+						_evancz$elm_graphics$Collage$toForm(
+							_evancz$elm_graphics$Element$centered(
+								_evancz$elm_graphics$Text$fromString(_user$project$Main$gameName)))),
+					_1: {
+						ctor: '::',
+						_0: _evancz$elm_graphics$Collage$toForm(
+							_evancz$elm_graphics$Element$centered(
+								_evancz$elm_graphics$Text$fromString(_user$project$Main$startGame))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$elm_graphics$Collage$moveY,
+								game.player.y,
+								A2(
+									_evancz$elm_graphics$Collage$moveX,
+									game.player.x,
+									A2(
+										_evancz$elm_graphics$Collage$filled,
+										_user$project$Main$userColor,
+										A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$userW, _user$project$Main$userH)))),
+							_1: {
+								ctor: '::',
+								_0: _evancz$elm_graphics$Collage$group(
+									A2(_elm_lang$core$List$map, _user$project$Main$renderBoks, game.boks)),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$moveX,
+										_user$project$Main$leftWall.x,
+										A2(
+											_evancz$elm_graphics$Collage$filled,
+											_elm_lang$core$Color$darkRed,
+											A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$leftWall.w, _user$project$Main$leftWall.h))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$moveX,
+											_user$project$Main$rightWall.x,
+											A2(
+												_evancz$elm_graphics$Collage$filled,
+												_elm_lang$core$Color$darkRed,
+												A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$rightWall.w, _user$project$Main$rightWall.h))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$moveY,
+												_user$project$Main$bottwall.y,
+												A2(
+													_evancz$elm_graphics$Collage$filled,
+													_elm_lang$core$Color$darkRed,
+													A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$bottwall.w, _user$project$Main$bottwall.h))),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			})) : (_elm_lang$core$Native_Utils.eq(game.state, _user$project$Main$Playing) ? _evancz$elm_graphics$Element$toHtml(
+		A3(
+			_evancz$elm_graphics$Collage$collage,
+			_user$project$Main$w,
+			_user$project$Main$h,
+			{
+				ctor: '::',
+				_0: A2(
+					_evancz$elm_graphics$Collage$filled,
+					_user$project$Main$backgroundColor,
+					A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$w, _user$project$Main$h)),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_evancz$elm_graphics$Collage$move,
+						{ctor: '_Tuple2', _0: 0, _1: 200},
+						_evancz$elm_graphics$Collage$toForm(
+							_evancz$elm_graphics$Element$centered(
+								_evancz$elm_graphics$Text$fromString(_user$project$Main$gameName)))),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_evancz$elm_graphics$Collage$move,
+							{ctor: '_Tuple2', _0: -210, _1: 340},
+							_evancz$elm_graphics$Collage$toForm(
+								_evancz$elm_graphics$Element$centered(
+									_evancz$elm_graphics$Text$fromString(
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											'Score: ',
+											_elm_lang$core$Basics$toString(
+												_elm_lang$core$Basics$truncate(game.score))))))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$elm_graphics$Collage$moveY,
+								game.player.y,
+								A2(
+									_evancz$elm_graphics$Collage$moveX,
+									game.player.x,
+									A2(
+										_evancz$elm_graphics$Collage$filled,
+										_user$project$Main$userColor,
+										A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$userW, _user$project$Main$userH)))),
+							_1: {
+								ctor: '::',
+								_0: _evancz$elm_graphics$Collage$group(
+									A2(_elm_lang$core$List$map, _user$project$Main$renderBoks, game.boks)),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$moveX,
+										_user$project$Main$leftWall.x,
+										A2(
+											_evancz$elm_graphics$Collage$filled,
+											_elm_lang$core$Color$darkRed,
+											A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$leftWall.w, _user$project$Main$leftWall.h))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$elm_graphics$Collage$moveX,
+											_user$project$Main$rightWall.x,
+											A2(
+												_evancz$elm_graphics$Collage$filled,
+												_elm_lang$core$Color$darkRed,
+												A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$rightWall.w, _user$project$Main$rightWall.h))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$elm_graphics$Collage$moveY,
+												_user$project$Main$bottwall.y,
+												A2(
+													_evancz$elm_graphics$Collage$filled,
+													_elm_lang$core$Color$darkRed,
+													A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$bottwall.w, _user$project$Main$bottwall.h))),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			})) : _evancz$elm_graphics$Element$toHtml(
+		A3(
+			_evancz$elm_graphics$Collage$collage,
+			_user$project$Main$w,
+			_user$project$Main$h,
+			{
+				ctor: '::',
+				_0: A2(
+					_evancz$elm_graphics$Collage$filled,
+					_user$project$Main$backgroundColor,
+					A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$w, _user$project$Main$h)),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_evancz$elm_graphics$Collage$move,
+						{ctor: '_Tuple2', _0: 0, _1: 200},
+						_evancz$elm_graphics$Collage$toForm(
+							_evancz$elm_graphics$Element$centered(
+								_evancz$elm_graphics$Text$fromString(_user$project$Main$gameName)))),
+					_1: {
+						ctor: '::',
+						_0: _evancz$elm_graphics$Collage$toForm(
+							_evancz$elm_graphics$Element$centered(
+								_evancz$elm_graphics$Text$fromString(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_user$project$Main$deadMelding,
+										_elm_lang$core$Basics$toString(
+											_elm_lang$core$Basics$truncate(game.score)))))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$elm_graphics$Collage$moveX,
+								_user$project$Main$leftWall.x,
+								A2(
+									_evancz$elm_graphics$Collage$filled,
+									_elm_lang$core$Color$darkRed,
+									A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$leftWall.w, _user$project$Main$leftWall.h))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_evancz$elm_graphics$Collage$moveX,
+									_user$project$Main$rightWall.x,
+									A2(
+										_evancz$elm_graphics$Collage$filled,
+										_elm_lang$core$Color$darkRed,
+										A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$rightWall.w, _user$project$Main$rightWall.h))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$elm_graphics$Collage$moveY,
+										_user$project$Main$bottwall.y,
+										A2(
+											_evancz$elm_graphics$Collage$filled,
+											_elm_lang$core$Color$darkRed,
+											A2(_evancz$elm_graphics$Collage$rect, _user$project$Main$bottwall.w, _user$project$Main$bottwall.h))),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			}))));
+};
+var _user$project$Main$InitialSeed = function (a) {
+	return {ctor: 'InitialSeed', _0: a};
+};
+var _user$project$Main$generateInitialSeed = A2(
+	_elm_lang$core$Random$generate,
+	_user$project$Main$InitialSeed,
+	A2(_elm_lang$core$Random$int, _elm_lang$core$Random$minInt, _elm_lang$core$Random$maxInt));
+var _user$project$Main$Tick = function (a) {
+	return {ctor: 'Tick', _0: a};
+};
+var _user$project$Main$KeyMsg = function (a) {
+	return {ctor: 'KeyMsg', _0: a};
+};
+var _user$project$Main$KeyDowns = function (a) {
+	return {ctor: 'KeyDowns', _0: a};
+};
+var _user$project$Main$KeyUps = function (a) {
+	return {ctor: 'KeyUps', _0: a};
+};
+var _user$project$Main$subscriptions = function (game) {
+	return _elm_lang$core$Platform_Sub$batch(
+		{
+			ctor: '::',
+			_0: _elm_lang$keyboard$Keyboard$downs(
+				function (_p7) {
+					return _user$project$Main$KeyMsg(
+						_user$project$Main$KeyDowns(_p7));
+				}),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$keyboard$Keyboard$ups(
+					function (_p8) {
+						return _user$project$Main$KeyMsg(
+							_user$project$Main$KeyUps(_p8));
+					}),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$animation_frame$AnimationFrame$diffs(_user$project$Main$Tick),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _user$project$Main$main = _elm_lang$html$Html$program(
+	{
+		init: {ctor: '_Tuple2', _0: _user$project$Main$defaultGame, _1: _user$project$Main$generateInitialSeed},
+		view: _user$project$Main$view,
+		update: _user$project$Main$updateWithCommand,
+		subscriptions: _user$project$Main$subscriptions
+	})();
